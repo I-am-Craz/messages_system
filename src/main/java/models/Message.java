@@ -1,38 +1,32 @@
 package models;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.time.LocalDate;
 
 public class Message implements Serializable {
     private String text;
     private LocalDate sendingDate;
-    private User sender;
-    private User recipient;
-    public boolean isAddedToQueue = false;
+    private String sender;
+    private String recipient;
 
-    public Message(String text, User sender, User recipient){
+    public Message(String text, Date date, String sender, String recipient){
         this.text = text;
-        this.sendingDate = LocalDate.now();
+        this.sendingDate = date.toLocalDate();
         this.sender = sender;
         this.recipient = recipient;
     }
 
-    public User getSender(){
-        return this.sender;
-    }
-
-    public String getMessageInfo(){
-        return String.format("Sending date: %s\n" +
-                "Sender full name: %s\n" +
-                "Sender username: %s\n" +
+    @Override
+    public String toString(){
+        return String.format(
+                "Sending date: %s\n" +
+                "Sender : %s\n" +
                 "Message text: %s\n" +
-                "Recipient full name: %s\n" +
-                "Recipient username: %s",
-                this.sendingDate.toString(),
-                this.sender.getFullName(),
-                this.sender.getUserName(),
+                "Recipient: %s",
+                this.sendingDate,
+                this.sender,
                 this.text,
-                this.recipient.getFullName(),
-                this.recipient.getUserName());
+                this.recipient);
     }
 }
