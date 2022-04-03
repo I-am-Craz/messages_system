@@ -14,14 +14,21 @@ public class MessageRepository {
     private static final String MESSAGES_TABLE_NAME = "messages";
 
     public static void getMessages(LocalDate startDate, LocalDate endDate, int limit, ArrayList<Message> messages){
+        messages.clear();
         Connection connection = DataSource.connect();
         Message message = null;
-        if(lastDate != null){
-            startDate = lastDate;
+        String query = null;
+
+        if(lastDate == null){
+            query = String.format("SELECT * FROM %s WHERE sending_date BETWEEN '%s' AND '%s' LIMIT %d;",
+                    MESSAGES_TABLE_NAME, startDate.toString(), endDate.toString(), limit);
+            lastDate = endDate;
+        } else{
+            query = String.format("SELECT * FROM %s WHERE sending_date BETWEEN '%s' AND '%s' LIMIT %d;",
+                    MESSAGES_TABLE_NAME, lastDate.plusDays(1), lastDate.plusDays(2), limit);
+            lastDate = lastDate.plusDays(2);
         }
-        lastDate = endDate;
-        String query = String.format("SELECT * FROM %s WHERE sending_date BETWEEN '%s' AND '%s' LIMIT %d;",
-                MESSAGES_TABLE_NAME, startDate.toString(), endDate.toString(), limit);
+
         try{
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
