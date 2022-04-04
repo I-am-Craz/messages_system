@@ -1,8 +1,6 @@
 package services;
 
 import config.Configurable;
-import config.MessageTextConfig;
-import config.SenderConfig;
 import models.Message;
 
 import java.util.*;
@@ -22,5 +20,3 @@ public class ConfigService {
         return queues;
     }
 }
-
-/// insert into messages (text, sender, recipient) values('hello, I want to sell my soul to the devil.', 'sender2', 'recipient');

@@ -4,6 +4,7 @@ import config.SenderConfig;
 import models.Message;
 import repositories.MessageRepository;
 import services.ConfigService;
+import services.LogService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class Main {
     public static void main(String[] args){
         ArrayList<Configurable> configs = generateConfigs();
+        LogService.generateLogFiles(configs);
         ArrayList<Message> messages = new ArrayList<>();
         Scheduler scheduler = new Scheduler();
         scheduler.startScheduleTask(messages, configs);
