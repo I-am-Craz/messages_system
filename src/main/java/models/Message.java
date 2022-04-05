@@ -22,7 +22,7 @@ public class Message {
                 "Sending date: %s\n" +
                 "Sender : %s\n" +
                 "Message text: %s\n" +
-                "Recipient: %s",
+                "Recipient: %s\n",
                 this.sendingDate,
                 this.sender,
                 this.text,
