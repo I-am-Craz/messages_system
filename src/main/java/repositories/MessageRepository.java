@@ -29,8 +29,7 @@ public class MessageRepository {
             lastDate = lastDate.plusDays(2);
         }
 
-        try{
-            Statement statement = connection.createStatement();
+        try(Statement statement = connection.createStatement()){
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()){
                 message = new Message(resultSet.getString("text"),
@@ -39,11 +38,16 @@ public class MessageRepository {
                         resultSet.getString("recipient"));
                 messages.add(message);
             }
-            statement.close();
-            connection.close();
         } catch(SQLException e){
             e.printStackTrace();
             logger.error(e.getMessage());
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
         }
     }
 }
