@@ -2,6 +2,7 @@ import configs.Configurable;
 import configs.MessageTextConfig;
 import configs.SenderConfig;
 import configs.queues.MessageQueue;
+import lombok.NonNull;
 import models.Message;
 import repositories.MessageRepository;
 import services.config.ConfigService;
@@ -22,9 +23,9 @@ public class Main {
     public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Enter start date");
+        System.out.println("Enter start date (yyyy-mm-dd)");
         LocalDate startDate = askForDate(scanner);
-        System.out.println("Enter end date");
+        System.out.println("Enter end date (yyyy-mm-dd)");
         LocalDate endDate = askForDate(scanner);
 
         ArrayList<Configurable> configs = generateConfigs(scanner);
@@ -55,7 +56,7 @@ public class Main {
         }
     }
 
-    private static ArrayList<Configurable> generateConfigs(Scanner scanner){
+    private static ArrayList<Configurable> generateConfigs(@NonNull Scanner scanner){
         ArrayList<Configurable> configs = new ArrayList<>();
         while(true){
             SenderConfig senderConfig = new SenderConfig(null);

@@ -2,28 +2,29 @@ package datasource;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.extern.log4j.Log4j;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
 
+@Log4j
 public class DataSource {
-    private static Logger logger = Logger.getLogger(DataSource.class.getName());
-    private static HikariConfig hikariConfig = new HikariConfig();
+    private static final HikariConfig HIKARI_CONFIG = new HikariConfig();
     private static HikariDataSource dataSource;
 
     private static final String DATABASE_NAME = "my_database";
-    private static String url = String.format("jdbc:postgresql://localhost:5432/%s", DATABASE_NAME);
-    private static String user = System.getenv("DATABASE_USER");
-    private static String password = System.getenv("DATABASE_PASSWORD");
+    private static final String URL = String.format("jdbc:postgresql://localhost:5432/%s", DATABASE_NAME);
+    private static final String USER = System.getenv("DATABASE_USER");
+    private static final String PASSWORD = System.getenv("DATABASE_PASSWORD");
 
     static {
-        hikariConfig.setJdbcUrl(url);
-        hikariConfig.setUsername(user);
-        hikariConfig.setPassword(password);
-        hikariConfig.addDataSourceProperty("cashPrepStmts", "true");
-        hikariConfig.addDataSourceProperty("prepStmtCashSize", "250");
-        hikariConfig.addDataSourceProperty("prepStmtsCashSqlLimit", "2048");
-        dataSource = new HikariDataSource(hikariConfig);
+        HIKARI_CONFIG.setJdbcUrl(URL);
+        HIKARI_CONFIG.setUsername(USER);
+        HIKARI_CONFIG.setPassword(PASSWORD);
+        HIKARI_CONFIG.addDataSourceProperty("cashPrepStmts", "true");
+        HIKARI_CONFIG.addDataSourceProperty("prepStmtCashSize", "250");
+        HIKARI_CONFIG.addDataSourceProperty("prepStmtsCashSqlLimit", "2048");
+        dataSource = new HikariDataSource(HIKARI_CONFIG);
     }
 
     public static Connection connect(){
@@ -32,8 +33,8 @@ public class DataSource {
             connection = dataSource.getConnection();
         }
         catch (SQLException e){
-            logger.error("Something went wrong with database connection:");
-            logger.error(e.getMessage());
+            log.error("Something went wrong with database connection:");
+            log.error(e.getMessage());
             System.exit(0);
         }
         return connection;

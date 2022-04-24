@@ -2,8 +2,8 @@ package services.log;
 
 import configs.Configurable;
 import configs.queues.MessageQueue;
-import org.apache.log4j.Logger;
-import repositories.MessageRepository;
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -14,8 +14,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+@Log4j
 public class LogService {
-    private static final Logger logger = Logger.getLogger(LogService.class.getName());
     private static final Path LOGS_DIR_PATH = Path.of(System.getenv("LOGS_DIR"));
 
     public  void generateLogFiles(ArrayList<Configurable> configs, List<MessageQueue> queues){
@@ -36,7 +36,7 @@ public class LogService {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 
@@ -48,14 +48,10 @@ public class LogService {
         }
     }
 
+    @AllArgsConstructor
     private static class LogWriter implements Runnable{
         private File logFile;
         private String messageInfo;
-
-        public LogWriter(File file, String info){
-            this.logFile = file;
-            this.messageInfo = info;
-        }
 
         @Override
         public void run(){
@@ -66,7 +62,7 @@ public class LogService {
                  }
             } catch (IOException e){
                 e.printStackTrace();
-                logger.error(e.getMessage());
+                log.error(e.getMessage());
             }
         }
     }

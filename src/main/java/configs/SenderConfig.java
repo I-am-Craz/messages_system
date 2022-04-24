@@ -1,28 +1,24 @@
 package configs;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NonNull;
 import models.Message;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
+@Getter
+@AllArgsConstructor
 public class SenderConfig implements Configurable{
     private String sender;
-    public SenderConfig(String sender) {
-        this.sender = sender;
-    }
-    public String getSender() {
-        return this.sender;
-    }
 
     @Override
-    public boolean configMatch(Message message) {
-        if(message.getSender().equals(this.getSender())){
-            return true;
-        }
-        return false;
+    public boolean configMatch(@NonNull Message message) {
+        return message.getSender().equals(this.getSender());
     }
     @Override
-    public void askForConfig(Scanner scanner, ArrayList<Configurable> configs){
+    public void askForConfig(@NonNull Scanner scanner, @NonNull ArrayList<Configurable> configs){
         while(true){
             System.out.println("Configure by message sender?");
             if(scanner.nextLine().equals("y")){
